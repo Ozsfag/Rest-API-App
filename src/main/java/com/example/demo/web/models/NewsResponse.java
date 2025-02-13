@@ -1,4 +1,4 @@
-package com.example.demo.web.model;
+package com.example.demo.web.models;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewsResponseDto {
+public class NewsResponse {
     private Long id;
     private String title;
     private String content;

@@ -1,8 +1,8 @@
 package com.example.demo.mapper;
 
 import com.example.demo.model.News;
-import com.example.demo.web.model.NewsRequestDto;
-import com.example.demo.web.model.NewsResponseDto;
+import com.example.demo.web.models.NewsRequest;
+import com.example.demo.web.models.NewsResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -29,7 +29,7 @@ public interface NewsMapper {
   @Mapping(target = "comments", ignore = true)
   @Mapping(target = "author", ignore = true)
   @Mapping(target = "category.id", source = "categoryId")
-  News toEntity(NewsRequestDto dto);
+  News toEntity(NewsRequest dto);
 
   /**
    * Maps a News entity to a NewsRequestDto.
@@ -38,7 +38,7 @@ public interface NewsMapper {
    * @return the mapped NewsRequestDto
    */
   @Mapping(target = "categoryId", source = "category.id")
-  NewsRequestDto toDto(News news);
+  NewsRequest toDto(News news);
 
   /**
    * Maps a News entity to a NewsResponseDto. Calculates the comment count.
@@ -50,7 +50,7 @@ public interface NewsMapper {
       target = "commentCount",
       expression = "java(news.getComments() != null ? (long) news.getComments().size() : 0L)")
   @Mapping(target = "comments", ignore = true)
-  NewsResponseDto toResponseDto(News news);
+  NewsResponse toResponseDto(News news);
 
   /**
    * Maps a News entity to a NewsResponseDto including comments.
@@ -62,7 +62,7 @@ public interface NewsMapper {
   @Mapping(
       target = "commentCount",
       expression = "java(news.getComments() != null ? (long) news.getComments().size() : 0L)")
-  NewsResponseDto toResponseDtoWithComments(News news);
+  NewsResponse toResponseDtoWithComments(News news);
 
   /**
    * Updates a News entity from a NewsRequestDto.
@@ -70,5 +70,5 @@ public interface NewsMapper {
    * @param dto the NewsRequestDto with updated values
    * @param news the News entity to be updated
    */
-  void updateEntityFromDto(NewsRequestDto dto, @MappingTarget News news);
+  void updateEntityFromDto(NewsRequest dto, @MappingTarget News news);
 }
