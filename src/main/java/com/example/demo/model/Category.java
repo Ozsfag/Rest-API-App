@@ -1,23 +1,18 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "categories")
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class Category {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+@Builder
+public class Category extends BaseEntity {
 
   @Column(nullable = false, unique = true, length = 15)
   private String name;
@@ -25,5 +20,6 @@ public class Category {
   @Column private String description;
 
   @OneToMany(mappedBy = "category")
-  private List<News> news;
+  @Builder.Default
+  private List<News> news = new ArrayList<>();
 }

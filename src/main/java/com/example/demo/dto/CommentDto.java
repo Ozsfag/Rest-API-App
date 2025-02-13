@@ -1,9 +1,8 @@
 package com.example.demo.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-
 import java.time.Instant;
+import lombok.Data;
 
 @Data
 public class CommentDto {

@@ -1,19 +1,16 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.Instant;
 import lombok.*;
 
 @Entity
 @Table(name = "comments")
-@Builder
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@Data
-public class Comment {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+@AllArgsConstructor
+@Builder
+public class Comment extends BaseEntity {
 
   @Column(nullable = false)
   private String content;
@@ -25,9 +22,4 @@ public class Comment {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "author_id", nullable = false)
   private Author author;
-
-  @Column(nullable = false)
-  private Instant createdAt;
-
-  @Column private Instant updatedAt;
 }
