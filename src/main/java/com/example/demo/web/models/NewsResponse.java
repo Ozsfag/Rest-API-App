@@ -2,6 +2,8 @@ package com.example.demo.web.models;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.example.demo.dto.CommentDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,28 +17,11 @@ public class NewsResponse {
   private Long id;
   private String title;
   private String content;
-  private AuthorDto author;
+  private AuthorResponse author;
   private CategoryDto category;
   private Long commentCount;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-  private List<CommentResponseDto> comments;
+  private List<CommentDto> comments;
 
-  @Data
-  @Builder
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class AuthorDto {
-    private Long id;
-    private String username;
-  }
-
-  @Data
-  @Builder
-  @NoArgsConstructor
-  @AllArgsConstructor
-  public static class CategoryDto {
-    private Long id;
-    private String name;
-  }
 }

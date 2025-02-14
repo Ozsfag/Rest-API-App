@@ -1,11 +1,11 @@
-package com.example.demo.dto;
+package com.example.demo.web.models;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AuthorDto {
+public class AuthorResponse {
 
   private Long id;
 

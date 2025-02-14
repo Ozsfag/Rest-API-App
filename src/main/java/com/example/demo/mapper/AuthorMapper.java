@@ -1,8 +1,9 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dto.AuthorDto;
+import com.example.demo.web.models.AuthorResponse;
 import com.example.demo.model.Author;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
@@ -11,9 +12,7 @@ import org.mapstruct.ReportingPolicy;
  * to automatically generate the implementation at compile time.
  */
 @Mapper(
-    componentModel = "spring",
-    unmappedTargetPolicy = ReportingPolicy.IGNORE,
-    nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+    componentModel = "spring")
 public interface AuthorMapper {
 
   /**
@@ -22,13 +21,19 @@ public interface AuthorMapper {
    * @param author the Author entity to be mapped
    * @return the mapped AuthorDto
    */
-  AuthorDto mapToDto(Author author);
+  @Mapping(target = "authorName", source = "username")
+  @Mapping(target = "email", source = "email")
+  @Mapping(target = "id", source = "id")
+  AuthorResponse ToDto(Author author);
 
   /**
    * Maps an AuthorDto to an Author entity.
    *
-   * @param authorDto the AuthorDto to be mapped
+   * @param authorResponse the AuthorDto to be mapped
    * @return the mapped Author entity
    */
-  Author mapToEntity(AuthorDto authorDto);
+  @Mapping(target = "username", source = "authorName")
+  @Mapping(target = "email", source = "email")
+  @Mapping(target = "id", source = "id")
+  Author ToEntity(AuthorResponse authorResponse);
 }
