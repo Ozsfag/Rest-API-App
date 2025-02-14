@@ -32,6 +32,5 @@ public class News extends BaseEntity {
   @Builder.Default
   private List<Comment> comments = new ArrayList<>();
 
-  @Transient
-  private Long commentCount;
+  @Transient private Long commentCount;
 }
