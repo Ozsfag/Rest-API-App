@@ -1,6 +1,6 @@
 package com.example.demo.repositories.specifications;
 
-import com.example.demo.model.News;
+import com.example.demo.models.News;
 import com.example.demo.repositories.criteria.NewsFilterCriteria;
 import java.time.Instant;
 import org.springframework.data.jpa.domain.Specification;

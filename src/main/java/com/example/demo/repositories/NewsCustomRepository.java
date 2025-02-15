@@ -1,6 +1,6 @@
 package com.example.demo.repositories;
 
-import com.example.demo.model.News;
+import com.example.demo.models.News;
 import com.example.demo.repositories.criteria.NewsFilterCriteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

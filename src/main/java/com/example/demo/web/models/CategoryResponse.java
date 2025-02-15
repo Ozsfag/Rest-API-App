@@ -1,10 +1,10 @@
-package com.example.demo.dto;
+package com.example.demo.web.models;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CategoryDto {
+public class CategoryResponse {
 
   private Long id;
 

@@ -1,9 +1,12 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dto.CommentDto;
-import com.example.demo.model.Comment;
+import com.example.demo.models.Author;
+import com.example.demo.web.models.AuthorResponse;
+import com.example.demo.web.models.CommentResponse;
+import com.example.demo.models.Comment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 /**
  * CommentMapper is an interface for mapping between Comment entity and CommentDto. It uses
@@ -15,23 +18,36 @@ import org.mapstruct.Mapping;
 public interface CommentMapper {
 
   /**
-   * Maps a Comment entity to a CommentDto.
+   * Maps a Comment entity to a CommentResponse.
    *
    * @param comment the Comment entity to be mapped
-   * @return the mapped CommentDto
+   * @return the mapped CommentResponse
    */
   @Mapping(target = "authorId", source = "author.id")
   @Mapping(target = "authorName", source = "author.username")
   @Mapping(target = "newsId", source = "news.id")
-  CommentDto toDto(Comment comment);
+  @Mapping(target = "newsTitle", source = "news.title")
+  @Mapping(target = "newsContent", source = "news.content")
+  @Mapping(target = "newsCreatedAt", source = "news.createdAt")
+  @Mapping(target = "newsUpdatedAt", source = "news.updatedAt")
+
+  CommentResponse commentToCommentResponse(Comment comment);
 
   /**
-   * Maps a CommentDto to a Comment entity. Ignores fields that are not present in the DTO.
+   * Maps a CommentResponse to a Comment entity. Ignores fields that are not present in the DTO.
    *
-   * @param commentDto the CommentDto to be mapped
+   * @param commentResponse the CommentResponse to be mapped
    * @return the mapped Comment entity
    */
-  @Mapping(target = "author", ignore = true)
-  @Mapping(target = "news", ignore = true)
-  Comment toEntity(CommentDto commentDto);
+  @Mapping(target = "author", source = "authorId")
+  @Mapping(target = "news", source = "newsId")
+  Comment commentResponseToComment(CommentResponse commentResponse);
+
+  /**
+   * Updates a Comment entity from a CommentResponse.
+   *
+   * @param request the CommentResponse with updated values
+   * @param comment the Comment entity to be updated
+   */
+  void updateEntityFromDto(CommentResponse request, @MappingTarget Comment comment);
 }

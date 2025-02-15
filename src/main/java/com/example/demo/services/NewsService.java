@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.mapper.NewsMapper;
-import com.example.demo.model.News;
+import com.example.demo.models.News;
 import com.example.demo.repositories.NewsRepository;
 import com.example.demo.web.models.NewsRequest;
 import com.example.demo.web.models.NewsResponse;

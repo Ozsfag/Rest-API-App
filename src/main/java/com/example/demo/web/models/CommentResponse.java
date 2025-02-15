@@ -1,11 +1,11 @@
-package com.example.demo.dto;
+package com.example.demo.web.models;
 
 import jakarta.validation.constraints.NotBlank;
 import java.time.Instant;
 import lombok.Data;
 
 @Data
-public class CommentDto {
+public class CommentResponse {
 
   private Long id;
 

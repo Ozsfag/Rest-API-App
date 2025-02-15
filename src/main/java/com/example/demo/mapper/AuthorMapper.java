@@ -1,14 +1,10 @@
 package com.example.demo.mapper;
 
-import com.example.demo.model.News;
 import com.example.demo.web.models.AuthorResponse;
-import com.example.demo.model.Author;
-import com.example.demo.web.models.NewsRequest;
+import com.example.demo.models.Author;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-
-import java.util.List;
 
 /**
  * AuthorMapper is an interface for mapping between Author entity and AuthorDto. It uses MapStruct

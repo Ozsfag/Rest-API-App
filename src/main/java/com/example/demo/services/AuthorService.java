@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.mapper.AuthorMapper;
-import com.example.demo.model.Author;
+import com.example.demo.models.Author;
 import com.example.demo.repositories.AuthorRepository;
 import com.example.demo.web.models.AuthorResponse;
 import java.util.List;
@@ -29,8 +29,8 @@ public class AuthorService {
   @Transactional
   public AuthorResponse createAuthor(AuthorResponse authorResponse) {
     Author author = authorMapper.authorResponseToAuthor(authorResponse);
-    author = authorRepository.save(author);
-    return authorMapper.authorToAuthorResponse(author);
+    Author savedAuthor = authorRepository.save(author);
+    return authorMapper.authorToAuthorResponse(savedAuthor);
   }
 
   @Transactional
@@ -40,8 +40,8 @@ public class AuthorService {
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Author not found when trying to update."));
     authorMapper.updateEntityFromDto(authorResponse, author);
-    author = authorRepository.save(author);
-    return authorMapper.authorToAuthorResponse(author);
+    Author updatedAuthor = authorRepository.save(author);
+    return authorMapper.authorToAuthorResponse(updatedAuthor);
   }
 
   @Transactional

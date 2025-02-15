@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/news")
+@RequestMapping("/api/news")
 public class NewsController {
   @Autowired private NewsService newsService;
 

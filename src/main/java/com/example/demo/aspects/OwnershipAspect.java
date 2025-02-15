@@ -45,7 +45,7 @@ public class OwnershipAspect {
             .authorId(Long.valueOf(userId))
             .categoryId(Long.valueOf(resourceId))
             .build();
-    repository.findNewsByFilters(criteria);
+//    repository.findNewsByFilters(criteria);
     // Implement actual ownership check logic here
     return true; // Placeholder implementation
   }
