@@ -40,7 +40,8 @@ public class OwnershipAspect {
   }
 
   private boolean isOwner(String userId, String resourceId) {
-    NewsFilterCriteria criteria = NewsFilterCriteria.builder()
+    NewsFilterCriteria criteria =
+        NewsFilterCriteria.builder()
             .authorId(Long.valueOf(userId))
             .categoryId(Long.valueOf(resourceId))
             .build();

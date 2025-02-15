@@ -6,6 +6,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface NewsRepository extends JpaRepository<News, Long>, JpaSpecificationExecutor<News> {
-
-}
+public interface NewsRepository extends JpaRepository<News, Long>, JpaSpecificationExecutor<News> {}

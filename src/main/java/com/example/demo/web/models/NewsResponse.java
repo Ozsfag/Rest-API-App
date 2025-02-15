@@ -1,9 +1,8 @@
 package com.example.demo.web.models;
 
+import com.example.demo.dto.CommentDto;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.example.demo.dto.CommentDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,30 +1,32 @@
 package com.example.demo.mapper;
 
+import com.example.demo.model.News;
 import com.example.demo.web.models.AuthorResponse;
 import com.example.demo.model.Author;
+import com.example.demo.web.models.NewsRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.MappingTarget;
+
+import java.util.List;
 
 /**
  * AuthorMapper is an interface for mapping between Author entity and AuthorDto. It uses MapStruct
  * to automatically generate the implementation at compile time.
  */
-@Mapper(
-    componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface AuthorMapper {
 
   /**
    * Maps an Author entity to an AuthorDto.
    *
    * @param author the Author entity to be mapped
-   * @return the mapped AuthorDto
+   * @return the mapped AuthorResponse
    */
   @Mapping(target = "authorName", source = "username")
   @Mapping(target = "email", source = "email")
   @Mapping(target = "id", source = "id")
-  AuthorResponse ToDto(Author author);
+  AuthorResponse authorToAuthorResponse(Author author);
 
   /**
    * Maps an AuthorDto to an Author entity.
@@ -35,5 +37,13 @@ public interface AuthorMapper {
   @Mapping(target = "username", source = "authorName")
   @Mapping(target = "email", source = "email")
   @Mapping(target = "id", source = "id")
-  Author ToEntity(AuthorResponse authorResponse);
+  Author authorResponseToAuthor(AuthorResponse authorResponse);
+
+  /**
+   * Updates a Author entity from a AuthorResponse.
+   *
+   * @param request the AuthorResponse with updated values
+   * @param author the Author entity to be updated
+   */
+  void updateEntityFromDto(AuthorResponse request, @MappingTarget Author author);
 }

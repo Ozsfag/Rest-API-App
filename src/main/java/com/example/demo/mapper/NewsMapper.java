@@ -20,7 +20,7 @@ public interface NewsMapper {
   /**
    * Maps a NewsRequestDto to a News entity. Ignores fields that are not present in the request.
    *
-   * @param dto the NewsRequestDto to be mapped
+   * @param request the NewsRequestDto to be mapped
    * @return the mapped News entity
    */
   @Mapping(target = "id", ignore = true)
@@ -29,46 +29,46 @@ public interface NewsMapper {
   @Mapping(target = "comments", ignore = true)
   @Mapping(target = "author", ignore = true)
   @Mapping(target = "category.id", source = "categoryId")
-  News toEntity(NewsRequest dto);
+  News newsRequestToNews(NewsRequest request);
 
   /**
-   * Maps a News entity to a NewsRequestDto.
+   * Maps a News entity to a NewsRequest.
    *
    * @param news the News entity to be mapped
-   * @return the mapped NewsRequestDto
+   * @return the mapped NewsRequest
    */
   @Mapping(target = "categoryId", source = "category.id")
-  NewsRequest toDto(News news);
+  NewsRequest newsToNewsRequest(News news);
 
   /**
-   * Maps a News entity to a NewsResponseDto. Calculates the comment count.
+   * Maps a News entity to a NewsResponse. Calculates the comment count.
    *
    * @param news the News entity to be mapped
-   * @return the mapped NewsResponseDto
+   * @return the mapped NewsResponse
    */
   @Mapping(
       target = "commentCount",
       expression = "java(news.getComments() != null ? (long) news.getComments().size() : 0L)")
   @Mapping(target = "comments", ignore = true)
-  NewsResponse toResponseDto(News news);
+  NewsResponse newsToNewsResponse(News news);
 
   /**
-   * Maps a News entity to a NewsResponseDto including comments.
+   * Maps a News entity to a NewsResponse including comments.
    *
    * @param news the News entity to be mapped
-   * @return the mapped NewsResponseDto with comments
+   * @return the mapped NewsResponse with comments
    */
   @Named("toResponseDtoWithComments")
   @Mapping(
       target = "commentCount",
       expression = "java(news.getComments() != null ? (long) news.getComments().size() : 0L)")
-  NewsResponse toResponseDtoWithComments(News news);
+  NewsResponse newsToNewsResponseWithComments(News news);
 
   /**
-   * Updates a News entity from a NewsRequestDto.
+   * Updates a News entity from a NewsRequest.
    *
-   * @param dto the NewsRequestDto with updated values
+   * @param request the NewsRequest with updated values
    * @param news the News entity to be updated
    */
-  void updateEntityFromDto(NewsRequest dto, @MappingTarget News news);
+  void updateEntityFromDto(NewsRequest request, @MappingTarget News news);
 }

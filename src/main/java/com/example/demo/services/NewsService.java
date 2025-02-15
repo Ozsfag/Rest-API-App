@@ -17,35 +17,41 @@ public class NewsService {
   @Autowired private NewsMapper newsMapper;
 
   public Page<NewsResponse> getAllNews(Pageable pageable) {
-    return newsRepository.findAll(pageable).map(newsMapper::toResponseDto);
+    return newsRepository.findAll(pageable).map(newsMapper::newsToNewsResponse);
   }
 
   public NewsResponse getNewsById(Long id) {
     News news =
-        newsRepository.findById(id).orElseThrow(() -> new RuntimeException("News not found."));
-    return newsMapper.toResponseDtoWithComments(news);
+        newsRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("News not found when trying to get."));
+    return newsMapper.newsToNewsResponseWithComments(news);
   }
 
   @Transactional
   public NewsResponse createNews(NewsRequest request) {
-    News news = newsMapper.toEntity(request);
+    News news = newsMapper.newsRequestToNews(request);
     News savedNews = newsRepository.save(news);
-    return newsMapper.toResponseDto(savedNews);
+    return newsMapper.newsToNewsResponse(savedNews);
   }
 
   @Transactional
   public NewsResponse updateNews(Long id, NewsRequest request) {
     News news =
-        newsRepository.findById(id).orElseThrow(() -> new RuntimeException("News not found."));
+        newsRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("News not found when trying to update."));
     newsMapper.updateEntityFromDto(request, news);
     News updatedNews = newsRepository.save(news);
-    return newsMapper.toResponseDto(updatedNews);
+    return newsMapper.newsToNewsResponse(updatedNews);
   }
 
   @Transactional
   public void deleteNews(Long id) {
     News news =
-        newsRepository.findById(id).orElseThrow(() -> new RuntimeException("News not found."));
+        newsRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("News not found when trying to delete."));
     newsRepository.delete(news);
   }
 }
