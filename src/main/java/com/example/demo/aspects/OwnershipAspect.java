@@ -2,7 +2,6 @@ package com.example.demo.aspects;
 
 import com.example.demo.annotations.Owner;
 import com.example.demo.repositories.NewsCustomRepository;
-import com.example.demo.repositories.criteria.NewsFilterCriteria;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
 import java.util.Map;
@@ -40,12 +39,7 @@ public class OwnershipAspect {
   }
 
   private boolean isOwner(String userId, String resourceId) {
-    NewsFilterCriteria criteria =
-        NewsFilterCriteria.builder()
-            .authorId(Long.valueOf(userId))
-            .categoryId(Long.valueOf(resourceId))
-            .build();
-//    repository.findNewsByFilters(criteria);
+
     // Implement actual ownership check logic here
     return true; // Placeholder implementation
   }
