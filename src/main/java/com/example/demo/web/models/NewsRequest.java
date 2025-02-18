@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewsRequest {
+  @NotNull(message = "News ID must be provided")
+  private Long id;
+
   @NotBlank(message = "Title is required")
   @Size(max = 255, message = "Title must not exceed 255 characters")
   private String title;
@@ -20,6 +23,9 @@ public class NewsRequest {
   @NotBlank(message = "Content is required")
   @Size(max = 2000, message = "Content must not exceed 2000 characters")
   private String content;
+
+  @NotNull(message = "Author ID must be provided")
+  private Long authorId;
 
   @NotNull(message = "Category ID must be provided")
   private Long categoryId;

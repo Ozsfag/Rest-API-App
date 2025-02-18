@@ -1,14 +1,14 @@
 package com.example.demo.web.controllers;
 
 import com.example.demo.services.AuthorService;
+import com.example.demo.web.models.AuthorRequest;
 import com.example.demo.web.models.AuthorResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/authors")
@@ -26,14 +26,14 @@ public class AuthorController {
   }
 
   @PostMapping
-  public ResponseEntity<AuthorResponse> createAuthor(@Valid @RequestBody AuthorResponse author) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(authorService.createAuthor(author));
+  public ResponseEntity<AuthorResponse> createAuthor(@Valid @RequestBody AuthorRequest request) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(authorService.createAuthor(request));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<AuthorResponse> updateAuthor(
-      @PathVariable Long id, @Valid @RequestBody AuthorResponse author) {
-    return ResponseEntity.ok(authorService.updateAuthor(id, author));
+      @PathVariable Long id, @Valid @RequestBody AuthorRequest request) {
+    return ResponseEntity.ok(authorService.updateAuthor(id, request));
   }
 
   @DeleteMapping("/{id}")

@@ -1,9 +1,8 @@
 package com.example.demo.mapper;
 
-import com.example.demo.models.Author;
-import com.example.demo.web.models.AuthorResponse;
-import com.example.demo.web.models.CategoryResponse;
 import com.example.demo.models.Category;
+import com.example.demo.web.models.CategoryRequest;
+import com.example.demo.web.models.CategoryResponse;
 import org.mapstruct.*;
 
 /**
@@ -30,19 +29,19 @@ public interface CategoryMapper {
   /**
    * Maps a CategoryResponse to a Category entity.
    *
-   * @param categoryResponse the CategoryResponse to be mapped
+   * @param request the CategoryResponse to be mapped
    * @return the mapped Category entity
    */
   @Mapping(target = "name", source = "name")
   @Mapping(target = "description", source = "description")
   @Mapping(target = "id", source = "id")
-  Category categoryResponseToCategory(CategoryResponse categoryResponse);
+  Category categoryRequestToCategory(CategoryRequest request);
 
   /**
-   * Updates a Category entity from a CategoryResponse.
+   * Updates a Category entity from a CategoryRequest.
    *
-   * @param request the CategoryResponse with updated values
+   * @param request the CategoryRequest with updated values
    * @param category the Category entity to be updated
    */
-  void updateEntityFromDto(CategoryResponse request, @MappingTarget Category category);
+  void updateEntityFromDto(CategoryRequest request, @MappingTarget Category category);
 }

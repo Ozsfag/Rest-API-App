@@ -6,13 +6,17 @@ import java.util.List;
 import lombok.*;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "authors", schema = "app_schema")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Author extends BaseEntity {
+public class Author {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Column(nullable = false, unique = true)
   private String username;

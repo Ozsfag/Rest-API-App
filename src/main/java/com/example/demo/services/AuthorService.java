@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.mapper.AuthorMapper;
 import com.example.demo.models.Author;
 import com.example.demo.repositories.AuthorRepository;
+import com.example.demo.web.models.AuthorRequest;
 import com.example.demo.web.models.AuthorResponse;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +28,19 @@ public class AuthorService {
   }
 
   @Transactional
-  public AuthorResponse createAuthor(AuthorResponse authorResponse) {
-    Author author = authorMapper.authorResponseToAuthor(authorResponse);
+  public AuthorResponse createAuthor(AuthorRequest authorRequest) {
+    Author author = authorMapper.authorRequestToAuthor(authorRequest);
     Author savedAuthor = authorRepository.save(author);
     return authorMapper.authorToAuthorResponse(savedAuthor);
   }
 
   @Transactional
-  public AuthorResponse updateAuthor(Long id, AuthorResponse authorResponse) {
+  public AuthorResponse updateAuthor(Long id, AuthorRequest authorRequest) {
     Author author =
         authorRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Author not found when trying to update."));
-    authorMapper.updateEntityFromDto(authorResponse, author);
+    authorMapper.updateEntityFromDto(authorRequest, author);
     Author updatedAuthor = authorRepository.save(author);
     return authorMapper.authorToAuthorResponse(updatedAuthor);
   }

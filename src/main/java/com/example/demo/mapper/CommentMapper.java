@@ -1,9 +1,8 @@
 package com.example.demo.mapper;
 
-import com.example.demo.models.Author;
-import com.example.demo.web.models.AuthorResponse;
-import com.example.demo.web.models.CommentResponse;
 import com.example.demo.models.Comment;
+import com.example.demo.web.models.CommentRequest;
+import com.example.demo.web.models.CommentResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -30,24 +29,23 @@ public interface CommentMapper {
   @Mapping(target = "newsContent", source = "news.content")
   @Mapping(target = "newsCreatedAt", source = "news.createdAt")
   @Mapping(target = "newsUpdatedAt", source = "news.updatedAt")
-
   CommentResponse commentToCommentResponse(Comment comment);
 
   /**
    * Maps a CommentResponse to a Comment entity. Ignores fields that are not present in the DTO.
    *
-   * @param commentResponse the CommentResponse to be mapped
+   * @param request the CommentResponse to be mapped
    * @return the mapped Comment entity
    */
   @Mapping(target = "author", source = "authorId")
   @Mapping(target = "news", source = "newsId")
-  Comment commentResponseToComment(CommentResponse commentResponse);
+  Comment commentRequestToComment(CommentRequest request);
 
   /**
-   * Updates a Comment entity from a CommentResponse.
+   * Updates a Comment entity from a CommentRequest.
    *
    * @param request the CommentResponse with updated values
    * @param comment the Comment entity to be updated
    */
-  void updateEntityFromDto(CommentResponse request, @MappingTarget Comment comment);
+  void updateEntityFromDto(CommentRequest request, @MappingTarget Comment comment);
 }

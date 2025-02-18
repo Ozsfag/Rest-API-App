@@ -6,13 +6,17 @@ import java.util.List;
 import lombok.*;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "categories", schema = "app_schema")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Category extends BaseEntity {
+public class Category {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Column(nullable = false, unique = true, length = 15)
   private String name;

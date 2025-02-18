@@ -18,17 +18,14 @@ import org.mapstruct.Named;
 public interface NewsMapper {
 
   /**
-   * Maps a NewsRequestDto to a News entity. Ignores fields that are not present in the request.
+   * Maps a NewsRequest to a News entity. Ignores fields that are not present in the request.
    *
-   * @param request the NewsRequestDto to be mapped
+   * @param request the NewsRequest to be mapped
    * @return the mapped News entity
    */
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "updatedAt", ignore = true)
-  @Mapping(target = "comments", ignore = true)
-  @Mapping(target = "author", ignore = true)
-  @Mapping(target = "category.id", source = "categoryId")
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "title", source = "title")
+  @Mapping(target = "content", source = "content")
   News newsRequestToNews(NewsRequest request);
 
   /**

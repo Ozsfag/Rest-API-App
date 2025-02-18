@@ -21,5 +21,4 @@ public class NewsResponse {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private List<CommentResponse> comments;
-
 }

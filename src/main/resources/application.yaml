@@ -4,14 +4,22 @@ spring:
 
   jpa:
     generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgres://localhost:5432/app_db
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/app_db
     username: postgres
     password: postgres
     hikari:
       schema: app_schema
-      connection-init-sql: CREATE SCHEMA IF NOT EXISTS app_schema;
       connection-timeout: 10000
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+
 
 app:
   check-client-api-header: false

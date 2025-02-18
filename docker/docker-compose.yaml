@@ -1,12 +1,19 @@
-version: "3"
 services:
   postgres:
     image: postgres:latest
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=app_db
+      # Use environment variables for sensitive data
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-app_db}
     volumes:
+      # Ensure the init script is correctly mapped
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - postgres_network
+
+networks:
+  postgres_network:
+    driver: bridge

@@ -1,7 +1,8 @@
 package com.example.demo.mapper;
 
-import com.example.demo.web.models.AuthorResponse;
 import com.example.demo.models.Author;
+import com.example.demo.web.models.AuthorRequest;
+import com.example.demo.web.models.AuthorResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -27,13 +28,13 @@ public interface AuthorMapper {
   /**
    * Maps an AuthorDto to an Author entity.
    *
-   * @param authorResponse the AuthorDto to be mapped
+   * @param authorRequest the AuthorDto to be mapped
    * @return the mapped Author entity
    */
   @Mapping(target = "username", source = "authorName")
   @Mapping(target = "email", source = "email")
   @Mapping(target = "id", source = "id")
-  Author authorResponseToAuthor(AuthorResponse authorResponse);
+  Author authorRequestToAuthor(AuthorRequest authorRequest);
 
   /**
    * Updates a Author entity from a AuthorResponse.
@@ -41,5 +42,5 @@ public interface AuthorMapper {
    * @param request the AuthorResponse with updated values
    * @param author the Author entity to be updated
    */
-  void updateEntityFromDto(AuthorResponse request, @MappingTarget Author author);
+  void updateEntityFromDto(AuthorRequest request, @MappingTarget Author author);
 }
