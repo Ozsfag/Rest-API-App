@@ -17,7 +17,7 @@ public class CategoryService {
 
   public List<CategoryResponse> getAll() {
     return categoryRepository.findAll().stream()
-        .map(categoryMapper::categoryToCategoryResponse)
+        .map(categoryMapper::toResponse)
         .toList();
   }
 
@@ -26,14 +26,14 @@ public class CategoryService {
         categoryRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Category not found when trying to get."));
-    return categoryMapper.categoryToCategoryResponse(category);
+    return categoryMapper.toResponse(category);
   }
 
   @Transactional
   public CategoryResponse createCategory(CategoryRequest request) {
-    Category category = categoryMapper.categoryRequestToCategory(request);
+    Category category = categoryMapper.toEntity(request);
     Category savedCategory = categoryRepository.save(category);
-    return categoryMapper.categoryToCategoryResponse(savedCategory);
+    return categoryMapper.toResponse(savedCategory);
   }
 
   @Transactional
@@ -42,9 +42,9 @@ public class CategoryService {
         categoryRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Category not found when trying to update."));
-    categoryMapper.updateEntityFromDto(request, category);
+    categoryMapper.updateFromRequest(request, category);
     Category updatedCategory = categoryRepository.save(category);
-    return categoryMapper.categoryToCategoryResponse(updatedCategory);
+    return categoryMapper.toResponse(updatedCategory);
   }
 
   @Transactional

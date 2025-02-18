@@ -11,41 +11,20 @@ import org.mapstruct.MappingTarget;
  * CommentMapper is an interface for mapping between Comment entity and CommentDto. It uses
  * MapStruct to automatically generate the implementation at compile time.
  */
-@Mapper(
-    componentModel = "spring",
-    uses = {AuthorMapper.class})
+@Mapper(componentModel = "spring", uses = {AuthorMapper.class, NewsMapper.class})
 public interface CommentMapper {
 
-  /**
-   * Maps a Comment entity to a CommentResponse.
-   *
-   * @param comment the Comment entity to be mapped
-   * @return the mapped CommentResponse
-   */
-  @Mapping(target = "authorId", source = "author.id")
-  @Mapping(target = "authorName", source = "author.username")
-  @Mapping(target = "newsId", source = "news.id")
-  @Mapping(target = "newsTitle", source = "news.title")
-  @Mapping(target = "newsContent", source = "news.content")
-  @Mapping(target = "newsCreatedAt", source = "news.createdAt")
-  @Mapping(target = "newsUpdatedAt", source = "news.updatedAt")
-  CommentResponse commentToCommentResponse(Comment comment);
+  @Mapping(target = "authorId", source = "comment.author.id")
+  @Mapping(target = "authorName", source = "comment.author.username")
+  @Mapping(target = "newsId", source = "comment.news.id")
+  @Mapping(target = "content", source = "content")
+  CommentResponse toResponse(Comment comment);
 
-  /**
-   * Maps a CommentResponse to a Comment entity. Ignores fields that are not present in the DTO.
-   *
-   * @param request the CommentResponse to be mapped
-   * @return the mapped Comment entity
-   */
-  @Mapping(target = "author", source = "authorId")
-  @Mapping(target = "news", source = "newsId")
-  Comment commentRequestToComment(CommentRequest request);
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "content", source = "content")
+  @Mapping(target = "author", source = "author")
+  @Mapping(target = "news", source = "news")
+  Comment toEntity(CommentRequest request);
 
-  /**
-   * Updates a Comment entity from a CommentRequest.
-   *
-   * @param request the CommentResponse with updated values
-   * @param comment the Comment entity to be updated
-   */
-  void updateEntityFromDto(CommentRequest request, @MappingTarget Comment comment);
+  void updateFromRequest(CommentRequest request, @MappingTarget Comment comment);
 }

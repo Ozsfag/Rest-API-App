@@ -17,22 +17,22 @@ public class CommentService {
 
   public List<CommentResponse> getAll() {
     return commentRepository.findAll().stream()
-        .map(commentMapper::commentToCommentResponse)
+        .map(commentMapper::toResponse)
         .toList();
   }
 
   public CommentResponse getCommentById(Long id) {
     return commentRepository
         .findById(id)
-        .map(commentMapper::commentToCommentResponse)
+        .map(commentMapper::toResponse)
         .orElseThrow(() -> new RuntimeException("Comment not found when trying to get."));
   }
 
   @Transactional
   public CommentResponse createComment(CommentRequest request) {
-    Comment comment = commentMapper.commentRequestToComment(request);
+    Comment comment = commentMapper.toEntity(request);
     Comment savedComment = commentRepository.save(comment);
-    return commentMapper.commentToCommentResponse(savedComment);
+    return commentMapper.toResponse(savedComment);
   }
 
   @Transactional
@@ -41,9 +41,9 @@ public class CommentService {
         commentRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Comment not found when trying to update."));
-    commentMapper.updateEntityFromDto(request, comment);
+    commentMapper.updateFromRequest(request, comment);
     Comment updatedComment = commentRepository.save(comment);
-    return commentMapper.commentToCommentResponse(updatedComment);
+    return commentMapper.toResponse(updatedComment);
   }
 
   @Transactional

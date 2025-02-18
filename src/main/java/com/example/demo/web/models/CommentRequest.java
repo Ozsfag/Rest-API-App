@@ -1,5 +1,7 @@
 package com.example.demo.web.models;
 
+import com.example.demo.models.Author;
+import com.example.demo.models.News;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,10 +16,10 @@ public class CommentRequest {
   private String content;
 
   @NotNull(message = "New's id must be not null.")
-  private Long newsId;
+  private News news;
 
   @NotNull(message = "Author's id must be not null.")
-  private Long authorId;
+  private Author author;
 
   @NotBlank(message = "Author's name  is required.")
   private String authorName;
