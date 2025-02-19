@@ -21,6 +21,7 @@ public interface CategoryMapper {
    * @param category the Category entity to be mapped
    * @return the mapped CategoryResponse
    */
+  @Named("categoryToCategoryResponse")
   @Mapping(target = "name", source = "name")
   @Mapping(target = "description", source = "description")
   @Mapping(target = "id", source = "id")
@@ -36,6 +37,12 @@ public interface CategoryMapper {
   @Mapping(target = "description", source = "description")
   @Mapping(target = "id", source = "id")
   Category categoryRequestToCategory(CategoryRequest request);
+
+  @Named("categoryResponseToCategory")
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "name", source = "name")
+  @Mapping(target = "description", source = "description")
+  Category categoryResponseToCategory(CategoryResponse category);
 
   /**
    * Updates a Category entity from a CategoryRequest.

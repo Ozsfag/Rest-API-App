@@ -13,7 +13,7 @@ import org.mapstruct.MappingTarget;
  */
 @Mapper(
     componentModel = "spring",
-    uses = {AuthorMapper.class})
+    uses = {AuthorMapper.class, NewsMapper.class})
 public interface CommentMapper {
 
   /**
@@ -22,13 +22,11 @@ public interface CommentMapper {
    * @param comment the Comment entity to be mapped
    * @return the mapped CommentResponse
    */
-  @Mapping(target = "authorId", source = "author.id")
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "content", source = "content")
+  @Mapping(target = "news", source = "news.id")
+  @Mapping(target = "author", source = "author.id")
   @Mapping(target = "authorName", source = "author.username")
-  @Mapping(target = "newsId", source = "news.id")
-  @Mapping(target = "newsTitle", source = "news.title")
-  @Mapping(target = "newsContent", source = "news.content")
-  @Mapping(target = "newsCreatedAt", source = "news.createdAt")
-  @Mapping(target = "newsUpdatedAt", source = "news.updatedAt")
   CommentResponse commentToCommentResponse(Comment comment);
 
   /**
@@ -37,8 +35,13 @@ public interface CommentMapper {
    * @param request the CommentResponse to be mapped
    * @return the mapped Comment entity
    */
-  @Mapping(target = "author", source = "authorId")
-  @Mapping(target = "news", source = "newsId")
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "content", source = "content")
+  @Mapping(target = "news", qualifiedByName = "newsMapperUtil.getNewsByNewsId", source = "newsId")
+  @Mapping(
+      target = "author",
+      qualifiedByName = "authorMapperUtil.getAuthorByAuthorId",
+      source = "authorId")
   Comment commentRequestToComment(CommentRequest request);
 
   /**

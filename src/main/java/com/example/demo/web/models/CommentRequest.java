@@ -18,7 +18,4 @@ public class CommentRequest {
 
   @NotNull(message = "Author's id must be not null.")
   private Long authorId;
-
-  @NotBlank(message = "Author's name  is required.")
-  private String authorName;
 }

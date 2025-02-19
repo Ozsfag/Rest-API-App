@@ -26,6 +26,14 @@ public interface NewsMapper {
   @Mapping(target = "id", source = "id")
   @Mapping(target = "title", source = "title")
   @Mapping(target = "content", source = "content")
+  @Mapping(
+      target = "author",
+      qualifiedByName = "authorMapperUtil.getAuthorByAuthorId",
+      source = "authorId")
+  @Mapping(
+      target = "category",
+      qualifiedByName = "categoryMapperUtil.getCategoryByCategoryId",
+      source = "categoryId")
   News newsRequestToNews(NewsRequest request);
 
   /**
@@ -34,6 +42,10 @@ public interface NewsMapper {
    * @param news the News entity to be mapped
    * @return the mapped NewsRequest
    */
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "title", source = "title")
+  @Mapping(target = "content", source = "content")
+  @Mapping(target = "authorId", source = "author.id")
   @Mapping(target = "categoryId", source = "category.id")
   NewsRequest newsToNewsRequest(News news);
 
@@ -43,10 +55,10 @@ public interface NewsMapper {
    * @param news the News entity to be mapped
    * @return the mapped NewsResponse
    */
-  @Mapping(
-      target = "commentCount",
-      expression = "java(news.getComments() != null ? (long) news.getComments().size() : 0L)")
+  @Named("newsToNewsResponse")
   @Mapping(target = "comments", ignore = true)
+  @Mapping(target = "author", qualifiedByName = "authorToAuthorResponse", source = "author")
+  @Mapping(target = "category", qualifiedByName = "categoryToCategoryResponse", source = "category")
   NewsResponse newsToNewsResponse(News news);
 
   /**
@@ -56,10 +68,16 @@ public interface NewsMapper {
    * @return the mapped NewsResponse with comments
    */
   @Named("toResponseDtoWithComments")
-  @Mapping(
-      target = "commentCount",
-      expression = "java(news.getComments() != null ? (long) news.getComments().size() : 0L)")
   NewsResponse newsToNewsResponseWithComments(News news);
+
+  @Named("newsResponseToNews")
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "title", source = "title")
+  @Mapping(target = "content", source = "content")
+  @Mapping(target = "author", qualifiedByName = "authorResponseToAuthor", source = "author")
+  @Mapping(target = "category", qualifiedByName = "categoryResponseToCategory", source = "category")
+  @Mapping(target = "comments", source = "comments")
+  News newsResponseToNews(NewsResponse response);
 
   /**
    * Updates a News entity from a NewsRequest.

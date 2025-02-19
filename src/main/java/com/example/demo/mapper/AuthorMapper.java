@@ -6,6 +6,7 @@ import com.example.demo.web.models.AuthorResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 /**
  * AuthorMapper is an interface for mapping between Author entity and AuthorDto. It uses MapStruct
@@ -20,6 +21,7 @@ public interface AuthorMapper {
    * @param author the Author entity to be mapped
    * @return the mapped AuthorResponse
    */
+  @Named("authorToAuthorResponse")
   @Mapping(target = "authorName", source = "username")
   @Mapping(target = "email", source = "email")
   @Mapping(target = "id", source = "id")
@@ -34,7 +36,17 @@ public interface AuthorMapper {
   @Mapping(target = "username", source = "authorName")
   @Mapping(target = "email", source = "email")
   @Mapping(target = "id", source = "id")
+  @Mapping(target = "comments", ignore = true)
+  @Mapping(target = "news", ignore = true)
   Author authorRequestToAuthor(AuthorRequest authorRequest);
+
+  @Named("authorResponseToAuthor")
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "username", source = "authorName")
+  @Mapping(target = "email", source = "email")
+  @Mapping(target = "news", ignore = true)
+  @Mapping(target = "comments", ignore = true)
+  Author authorResponseToAuthor(AuthorResponse response);
 
   /**
    * Updates a Author entity from a AuthorResponse.
