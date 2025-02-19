@@ -1,5 +1,7 @@
 package com.example.demo.mapper;
 
+import com.example.demo.mapper.utils.AuthorMapperUtil;
+import com.example.demo.mapper.utils.CategoryMapperUtil;
 import com.example.demo.models.News;
 import com.example.demo.web.models.NewsRequest;
 import com.example.demo.web.models.NewsResponse;
@@ -14,7 +16,13 @@ import org.mapstruct.Named;
  */
 @Mapper(
     componentModel = "spring",
-    uses = {AuthorMapper.class, CategoryMapper.class})
+    uses = {
+      AuthorMapper.class,
+      CategoryMapper.class,
+      CommentMapper.class,
+      AuthorMapperUtil.class,
+      CategoryMapperUtil.class
+    })
 public interface NewsMapper {
 
   /**
@@ -28,12 +36,13 @@ public interface NewsMapper {
   @Mapping(target = "content", source = "content")
   @Mapping(
       target = "author",
-      qualifiedByName = "authorMapperUtil.getAuthorByAuthorId",
+      qualifiedByName = {"authorMapperUtil", "getAuthorByAuthorId"},
       source = "authorId")
   @Mapping(
       target = "category",
-      qualifiedByName = "categoryMapperUtil.getCategoryByCategoryId",
+      qualifiedByName = {"categoryMapperUtil", "getCategoryByCategoryId"},
       source = "categoryId")
+  @Mapping(target = "comments", ignore = true)
   News newsRequestToNews(NewsRequest request);
 
   /**
@@ -68,6 +77,15 @@ public interface NewsMapper {
    * @return the mapped NewsResponse with comments
    */
   @Named("toResponseDtoWithComments")
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "title", source = "title")
+  @Mapping(target = "content", source = "content")
+  @Mapping(target = "author", qualifiedByName = "authorToAuthorResponse", source = "author")
+  @Mapping(target = "category", qualifiedByName = "categoryToCategoryResponse", source = "category")
+  @Mapping(
+      target = "comments",
+      qualifiedByName = "commentListToCommentResponseList",
+      source = "comments")
   NewsResponse newsToNewsResponseWithComments(News news);
 
   @Named("newsResponseToNews")
@@ -76,7 +94,10 @@ public interface NewsMapper {
   @Mapping(target = "content", source = "content")
   @Mapping(target = "author", qualifiedByName = "authorResponseToAuthor", source = "author")
   @Mapping(target = "category", qualifiedByName = "categoryResponseToCategory", source = "category")
-  @Mapping(target = "comments", source = "comments")
+  @Mapping(
+      target = "comments",
+      qualifiedByName = "commentResponseListToCommentList",
+      source = "comments")
   News newsResponseToNews(NewsResponse response);
 
   /**

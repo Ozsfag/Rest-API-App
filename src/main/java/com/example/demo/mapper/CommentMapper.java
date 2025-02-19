@@ -1,11 +1,15 @@
 package com.example.demo.mapper;
 
+import com.example.demo.mapper.utils.AuthorMapperUtil;
+import com.example.demo.mapper.utils.NewsMapperUtils;
 import com.example.demo.models.Comment;
 import com.example.demo.web.models.CommentRequest;
 import com.example.demo.web.models.CommentResponse;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 /**
  * CommentMapper is an interface for mapping between Comment entity and CommentDto. It uses
@@ -13,7 +17,7 @@ import org.mapstruct.MappingTarget;
  */
 @Mapper(
     componentModel = "spring",
-    uses = {AuthorMapper.class, NewsMapper.class})
+    uses = {AuthorMapper.class, NewsMapper.class, NewsMapperUtils.class, AuthorMapperUtil.class})
 public interface CommentMapper {
 
   /**
@@ -24,8 +28,8 @@ public interface CommentMapper {
    */
   @Mapping(target = "id", source = "id")
   @Mapping(target = "content", source = "content")
-  @Mapping(target = "news", source = "news.id")
-  @Mapping(target = "author", source = "author.id")
+  @Mapping(target = "newsId", source = "news.id")
+  @Mapping(target = "authorId", source = "author.id")
   @Mapping(target = "authorName", source = "author.username")
   CommentResponse commentToCommentResponse(Comment comment);
 
@@ -37,10 +41,13 @@ public interface CommentMapper {
    */
   @Mapping(target = "id", source = "id")
   @Mapping(target = "content", source = "content")
-  @Mapping(target = "news", qualifiedByName = "newsMapperUtil.getNewsByNewsId", source = "newsId")
+  @Mapping(
+      target = "news",
+      qualifiedByName = {"newsMapperUtil", "getNewsByNewsId"},
+      source = "newsId")
   @Mapping(
       target = "author",
-      qualifiedByName = "authorMapperUtil.getAuthorByAuthorId",
+      qualifiedByName = {"authorMapperUtil", "getAuthorByAuthorId"},
       source = "authorId")
   Comment commentRequestToComment(CommentRequest request);
 
@@ -51,4 +58,10 @@ public interface CommentMapper {
    * @param comment the Comment entity to be updated
    */
   void updateEntityFromDto(CommentRequest request, @MappingTarget Comment comment);
+
+  @Named("commentListToCommentResponseList")
+  List<CommentResponse> commentListToCommentResponseList(List<Comment> comments);
+
+  @Named("commentResponseListToCommentList")
+  List<Comment> commentResponseListToCommentList(List<CommentResponse> comments);
 }

@@ -16,7 +16,7 @@ public class AuthorService {
   @Autowired private AuthorMapper authorMapper;
 
   public List<AuthorResponse> getAll() {
-    return authorRepository.findAll().stream().map(authorMapper::toResponse).toList();
+    return authorRepository.findAll().stream().map(authorMapper::authorToAuthorResponse).toList();
   }
 
   public AuthorResponse getAuthorById(Long id) {
@@ -24,14 +24,14 @@ public class AuthorService {
         authorRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Author now found when trying to get."));
-    return authorMapper.toResponse(author);
+    return authorMapper.authorToAuthorResponse(author);
   }
 
   @Transactional
   public AuthorResponse createAuthor(AuthorRequest authorRequest) {
-    Author author = authorMapper.toEntity(authorRequest);
+    Author author = authorMapper.authorRequestToAuthor(authorRequest);
     Author savedAuthor = authorRepository.save(author);
-    return authorMapper.toResponse(savedAuthor);
+    return authorMapper.authorToAuthorResponse(savedAuthor);
   }
 
   @Transactional
@@ -40,9 +40,9 @@ public class AuthorService {
         authorRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("Author not found when trying to update."));
-    authorMapper.updateFromRequest(authorRequest, author);
+    authorMapper.updateEntityFromDto(authorRequest, author);
     Author updatedAuthor = authorRepository.save(author);
-    return authorMapper.toResponse(updatedAuthor);
+    return authorMapper.authorToAuthorResponse(updatedAuthor);
   }
 
   @Transactional

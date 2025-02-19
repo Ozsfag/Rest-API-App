@@ -17,7 +17,7 @@ public class NewsService {
   @Autowired private NewsMapper newsMapper;
 
   public Page<NewsResponse> getAllNews(Pageable pageable) {
-    return newsRepository.findAll(pageable).map(newsMapper::toResponse);
+    return newsRepository.findAll(pageable).map(newsMapper::newsToNewsResponse);
   }
 
   public NewsResponse getNewsById(Long id) {
@@ -25,14 +25,14 @@ public class NewsService {
         newsRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("News not found when trying to get."));
-    return newsMapper.toResponseWithComments(news);
+    return newsMapper.newsToNewsResponseWithComments(news);
   }
 
   @Transactional
   public NewsResponse createNews(NewsRequest request) {
-    News news = newsMapper.toEntity(request);
+    News news = newsMapper.newsRequestToNews(request);
     News savedNews = newsRepository.save(news);
-    return newsMapper.toResponse(savedNews);
+    return newsMapper.newsToNewsResponse(savedNews);
   }
 
   @Transactional
@@ -41,9 +41,9 @@ public class NewsService {
         newsRepository
             .findById(id)
             .orElseThrow(() -> new RuntimeException("News not found when trying to update."));
-    newsMapper.updateFromRequest(request, news);
+    newsMapper.updateEntityFromDto(request, news);
     News updatedNews = newsRepository.save(news);
-    return newsMapper.toResponse(updatedNews);
+    return newsMapper.newsToNewsResponse(updatedNews);
   }
 
   @Transactional
