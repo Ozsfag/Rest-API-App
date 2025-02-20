@@ -5,7 +5,6 @@ import com.example.demo.mapper.utils.CategoryMapperUtil;
 import com.example.demo.models.News;
 import com.example.demo.web.models.NewsRequest;
 import com.example.demo.web.models.NewsResponse;
-import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -66,9 +65,13 @@ public interface NewsMapper {
    * @return the mapped NewsResponse
    */
   @Named("newsToNewsResponse")
-  @Mapping(target = "comments", ignore = true)
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "title", source = "title")
+  @Mapping(target = "content", source = "content")
   @Mapping(target = "author", qualifiedByName = "authorToAuthorResponse", source = "author")
   @Mapping(target = "category", qualifiedByName = "categoryToCategoryResponse", source = "category")
+  @Mapping(target = "comments", ignore = true)
+  @Mapping(target = "commentCount", expression = "java(news.getComments().size())")
   NewsResponse newsToNewsResponse(News news);
 
   /**
@@ -87,6 +90,7 @@ public interface NewsMapper {
       target = "comments",
       qualifiedByName = "commentListToCommentResponseList",
       source = "comments")
+  @Mapping(target = "commentCount", ignore = true)
   NewsResponse newsToNewsResponseWithComments(News news);
 
   @Named("newsResponseToNews")
@@ -108,6 +112,4 @@ public interface NewsMapper {
    * @param news the News entity to be updated
    */
   News updateEntityFromDto(NewsRequest request, @MappingTarget News news);
-
-  List<NewsResponse> newsListToNewsResponseList(List<News> news);
 }

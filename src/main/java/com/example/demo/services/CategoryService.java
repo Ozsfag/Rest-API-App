@@ -4,8 +4,9 @@ import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.models.Category;
 import com.example.demo.repositories.CategoryRepository;
 import com.example.demo.web.models.CategoryRequest;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +15,8 @@ public class CategoryService {
   @Autowired private CategoryRepository categoryRepository;
   @Autowired private CategoryMapper categoryMapper;
 
-  public List<Category> getAll() {
-    return categoryRepository.findAll();
+  public Page<Category> getAll(Pageable pageable) {
+    return categoryRepository.findAll(pageable);
   }
 
   public Category getCategoryById(Long id) {

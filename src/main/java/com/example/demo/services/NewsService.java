@@ -5,7 +5,6 @@ import com.example.demo.mapper.NewsMapper;
 import com.example.demo.models.News;
 import com.example.demo.repositories.NewsRepository;
 import com.example.demo.web.models.NewsRequest;
-import com.example.demo.web.models.NewsResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,8 +16,8 @@ public class NewsService {
   @Autowired private NewsRepository newsRepository;
   @Autowired private NewsMapper newsMapper;
 
-  public Page<NewsResponse> getAllNews(Pageable pageable) {
-    return newsRepository.findAll(pageable).map(newsMapper::newsToNewsResponse);
+  public Page<News> getAllNews(Pageable pageable) {
+    return newsRepository.findAll(pageable);
   }
 
   public News getNewsById(Long id) {

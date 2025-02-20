@@ -5,8 +5,9 @@ import com.example.demo.services.CategoryService;
 import com.example.demo.web.models.CategoryRequest;
 import com.example.demo.web.models.CategoryResponse;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,8 @@ public class CategoryController {
   @Autowired private CategoryMapper categoryMapper;
 
   @GetMapping
-  public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-    var response = categoryMapper.categoryListToCategoryResponseList(categoryService.getAll());
+  public ResponseEntity<Page<CategoryResponse>> getAllCategories(Pageable pageable) {
+    var response = categoryService.getAll(pageable).map(categoryMapper::categoryToCategoryResponse);
     return ResponseEntity.ok(response);
   }
 

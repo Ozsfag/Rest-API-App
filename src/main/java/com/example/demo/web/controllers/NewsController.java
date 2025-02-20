@@ -18,10 +18,10 @@ public class NewsController {
   @Autowired private NewsService newsService;
   @Autowired private NewsMapper newsMapper;
 
-  // следует изменить метод getAll так, чтобы он работал корректно с Page. Посмотри!!!
   @GetMapping
   public ResponseEntity<Page<NewsResponse>> getAll(Pageable pageable) {
-    return ResponseEntity.ok(newsService.getAllNews(pageable));
+    var response = newsService.getAllNews(pageable).map(newsMapper::newsToNewsResponse);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}")

@@ -18,4 +18,5 @@ public class NewsResponse {
   private AuthorResponse author;
   private CategoryResponse category;
   private List<CommentResponse> comments;
+  private Long commentCount;
 }

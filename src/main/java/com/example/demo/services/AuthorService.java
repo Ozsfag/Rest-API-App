@@ -4,8 +4,9 @@ import com.example.demo.mapper.AuthorMapper;
 import com.example.demo.models.Author;
 import com.example.demo.repositories.AuthorRepository;
 import com.example.demo.web.models.AuthorRequest;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +15,8 @@ public class AuthorService {
   @Autowired private AuthorRepository authorRepository;
   @Autowired private AuthorMapper authorMapper;
 
-  public List<Author> getAll() {
-    return authorRepository.findAll();
+  public Page<Author> getAll(Pageable pageable) {
+    return authorRepository.findAll(pageable);
   }
 
   public Author getAuthorById(Long id) {

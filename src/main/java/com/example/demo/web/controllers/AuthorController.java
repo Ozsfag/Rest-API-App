@@ -5,8 +5,9 @@ import com.example.demo.services.AuthorService;
 import com.example.demo.web.models.AuthorRequest;
 import com.example.demo.web.models.AuthorResponse;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,8 @@ public class AuthorController {
   @Autowired private AuthorMapper authorMapper;
 
   @GetMapping
-  public ResponseEntity<List<AuthorResponse>> getAllAuthors() {
-    var response = authorMapper.authoListToAuthorResponseList(authorService.getAll());
+  public ResponseEntity<Page<AuthorResponse>> getAllAuthors(Pageable pageable) {
+    var response = authorService.getAll(pageable).map(authorMapper::authorToAuthorResponse);
     return ResponseEntity.ok(response);
   }
 

@@ -14,8 +14,8 @@ public class CommentService {
   @Autowired private CommentRepository commentRepository;
   @Autowired private CommentMapper commentMapper;
 
-  public List<Comment> getAll() {
-    return commentRepository.findAll();
+  public List<Comment> getCommentsById(Long newsId) {
+    return commentRepository.findByNewsId(newsId);
   }
 
   public Comment getCommentById(Long id) {
