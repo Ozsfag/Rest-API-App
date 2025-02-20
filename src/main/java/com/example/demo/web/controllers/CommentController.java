@@ -1,5 +1,6 @@
 package com.example.demo.web.controllers;
 
+import com.example.demo.mapper.CommentMapper;
 import com.example.demo.services.CommentService;
 import com.example.demo.web.models.CommentRequest;
 import com.example.demo.web.models.CommentResponse;
@@ -14,26 +15,32 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/comments")
 public class CommentController {
   @Autowired private CommentService commentService;
+  @Autowired private CommentMapper commentMapper;
 
   @GetMapping
   public ResponseEntity<List<CommentResponse>> getAllComments() {
-    return ResponseEntity.ok(commentService.getAll());
+    var response = commentMapper.commentListToCommentResponseList(commentService.getAll());
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<CommentResponse> getCommentById(@PathVariable Long id) {
-    return ResponseEntity.ok(commentService.getCommentById(id));
+    var response = commentMapper.commentToCommentResponse(commentService.getCommentById(id));
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping
   public ResponseEntity<CommentResponse> createComment(@Valid @RequestBody CommentRequest request) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(request));
+    var response = commentMapper.commentToCommentResponse(commentService.createComment(request));
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<CommentResponse> updateComment(
       @PathVariable Long id, @Valid @RequestBody CommentRequest request) {
-    return ResponseEntity.ok(commentService.updateComment(id, request));
+    var response =
+        commentMapper.commentToCommentResponse(commentService.updateComment(id, request));
+    return ResponseEntity.ok(response);
   }
 
   @DeleteMapping("/{id}")

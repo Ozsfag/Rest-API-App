@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.config.BootstrapMode;
 
 @SpringBootApplication
-@EnableJpaRepositories(bootstrapMode = BootstrapMode.LAZY)
+@EnableJpaRepositories(
+    bootstrapMode = BootstrapMode.LAZY,
+    basePackages = "com.example.demo.repositories")
 @EnableAspectJAutoProxy
 public class RestAppApplication {
 

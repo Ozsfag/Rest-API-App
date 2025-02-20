@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.annotations.Owner;
 import com.example.demo.mapper.NewsMapper;
 import com.example.demo.models.News;
 import com.example.demo.repositories.NewsRepository;
@@ -20,38 +21,30 @@ public class NewsService {
     return newsRepository.findAll(pageable).map(newsMapper::newsToNewsResponse);
   }
 
-  public NewsResponse getNewsById(Long id) {
-    News news =
-        newsRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("News not found when trying to get."));
-    return newsMapper.newsToNewsResponseWithComments(news);
+  public News getNewsById(Long id) {
+    return newsRepository
+        .findById(id)
+        .orElseThrow(() -> new RuntimeException("News not found when trying to get."));
   }
 
   @Transactional
-  public NewsResponse createNews(NewsRequest request) {
+  public News createNews(NewsRequest request) {
     News news = newsMapper.newsRequestToNews(request);
-    News savedNews = newsRepository.save(news);
-    return newsMapper.newsToNewsResponse(savedNews);
+    return newsRepository.save(news);
   }
 
+  @Owner(parameterName = "newsId")
   @Transactional
-  public NewsResponse updateNews(Long id, NewsRequest request) {
-    News news =
-        newsRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("News not found when trying to update."));
-    newsMapper.updateEntityFromDto(request, news);
-    News updatedNews = newsRepository.save(news);
-    return newsMapper.newsToNewsResponse(updatedNews);
+  public News updateNews(Long id, NewsRequest request) {
+    News news = getNewsById(id);
+    News updatedNews = newsMapper.updateEntityFromDto(request, news);
+    return newsRepository.save(updatedNews);
   }
 
+  @Owner(parameterName = "newsId")
   @Transactional
   public void deleteNews(Long id) {
-    News news =
-        newsRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("News not found when trying to delete."));
+    News news = getNewsById(id);
     newsRepository.delete(news);
   }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.web.controllers;
 
+import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.services.CategoryService;
 import com.example.demo.web.models.CategoryRequest;
 import com.example.demo.web.models.CategoryResponse;
@@ -14,27 +15,34 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/categories")
 public class CategoryController {
   @Autowired private CategoryService categoryService;
+  @Autowired private CategoryMapper categoryMapper;
 
   @GetMapping
   public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-    return ResponseEntity.ok(categoryService.getAll());
+    var response = categoryMapper.categoryListToCategoryResponseList(categoryService.getAll());
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
-    return ResponseEntity.ok(categoryService.getCategoryById(id));
+    var response = categoryMapper.categoryToCategoryResponse(categoryService.getCategoryById(id));
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping
   public ResponseEntity<CategoryResponse> createCategory(
       @Valid @RequestBody CategoryRequest request) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(request));
+    var response =
+        categoryMapper.categoryToCategoryResponse(categoryService.createCategory(request));
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<CategoryResponse> updateCategory(
       @PathVariable Long id, @Valid @RequestBody CategoryRequest request) {
-    return ResponseEntity.ok(categoryService.updateCategory(id, request));
+    var response =
+        categoryMapper.categoryToCategoryResponse(categoryService.updateCategory(id, request));
+    return ResponseEntity.ok(response);
   }
 
   @DeleteMapping("/{id}")

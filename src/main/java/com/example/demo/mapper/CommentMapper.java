@@ -57,7 +57,7 @@ public interface CommentMapper {
    * @param request the CommentResponse with updated values
    * @param comment the Comment entity to be updated
    */
-  void updateEntityFromDto(CommentRequest request, @MappingTarget Comment comment);
+  Comment updateEntityFromDto(CommentRequest request, @MappingTarget Comment comment);
 
   @Named("commentListToCommentResponseList")
   List<CommentResponse> commentListToCommentResponseList(List<Comment> comments);

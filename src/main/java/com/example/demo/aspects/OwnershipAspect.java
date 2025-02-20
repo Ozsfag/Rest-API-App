@@ -1,7 +1,8 @@
 package com.example.demo.aspects;
 
 import com.example.demo.annotations.Owner;
-import com.example.demo.repositories.NewsCustomRepository;
+import com.example.demo.repositories.CommentRepository;
+import com.example.demo.repositories.NewsRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
 import java.util.Map;
@@ -17,7 +18,9 @@ import org.springframework.web.servlet.HandlerMapping;
 @Aspect
 @Component
 public class OwnershipAspect {
-  @Autowired private NewsCustomRepository repository;
+
+  @Autowired private NewsRepository newsRepository;
+  @Autowired private CommentRepository commentRepository;
 
   @Before("@annotation(owner)")
   public void checkOwnership(JoinPoint joinPoint, Owner owner) throws AccessDeniedException {
@@ -32,15 +35,24 @@ public class OwnershipAspect {
       String userId = request.getHeader("User-Id"); // In real app, use proper authentication
       String resourceId = pathVariables.get(owner.parameterName());
 
-      if (!isOwner(userId, resourceId)) {
+      if (resourceId != null && !isOwner(userId, resourceId, owner.parameterName())) {
         throw new AccessDeniedException("You don't have permission to modify this resource");
       }
     }
   }
 
-  private boolean isOwner(String userId, String resourceId) {
-
-    // Implement actual ownership check logic here
-    return true; // Placeholder implementation
+  private boolean isOwner(String userId, String resourceId, String parameterName) {
+    if ("newsId".equals(parameterName)) {
+      return newsRepository
+          .findById(Long.valueOf(resourceId))
+          .map(news -> news.getAuthor().getId().equals(Long.valueOf(userId)))
+          .orElse(false);
+    } else if ("commentId".equals(parameterName)) {
+      return commentRepository
+          .findById(Long.valueOf(resourceId))
+          .map(comment -> comment.getAuthor().getId().equals(Long.valueOf(userId)))
+          .orElse(false);
+    }
+    return false;
   }
 }

@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 import com.example.demo.models.Category;
 import com.example.demo.web.models.CategoryRequest;
 import com.example.demo.web.models.CategoryResponse;
+import java.util.List;
 import org.mapstruct.*;
 
 /**
@@ -50,5 +51,7 @@ public interface CategoryMapper {
    * @param request the CategoryRequest with updated values
    * @param category the Category entity to be updated
    */
-  void updateEntityFromDto(CategoryRequest request, @MappingTarget Category category);
+  Category updateEntityFromDto(CategoryRequest request, @MappingTarget Category category);
+
+  List<CategoryResponse> categoryListToCategoryResponseList(List<Category> categories);
 }

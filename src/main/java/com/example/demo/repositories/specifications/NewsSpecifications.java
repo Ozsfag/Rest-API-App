@@ -1,18 +1,21 @@
 package com.example.demo.repositories.specifications;
 
+import com.example.demo.models.Author;
 import com.example.demo.models.News;
 import com.example.demo.repositories.criteria.NewsFilterCriteria;
-import java.time.Instant;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-public class NewsSpecifications {
+public class NewsSpecifications implements Specification<Author> {
 
   public static Specification<News> withFilters(NewsFilterCriteria criteria) {
     return Specification.<News>allOf()
         .and(hasAuthor(criteria.getAuthorId()))
         .and(hasCategory(criteria.getCategoryId()))
-        .and(titleContains(criteria.getSearchTerm()))
-        .and(createdBetween(criteria.getStart(), criteria.getEnd()));
+        .and(titleContains(criteria.getTitle()));
   }
 
   private static Specification<News> hasAuthor(Long authorId) {
@@ -42,18 +45,9 @@ public class NewsSpecifications {
     };
   }
 
-  private static Specification<News> createdBetween(Instant start, Instant end) {
-    return (root, query, cb) -> {
-      if (start == null && end == null) {
-        return cb.conjunction();
-      }
-      if (start == null) {
-        return cb.lessThanOrEqualTo(root.get("createdAt"), end);
-      }
-      if (end == null) {
-        return cb.greaterThanOrEqualTo(root.get("createdAt"), start);
-      }
-      return cb.between(root.get("createdAt"), start, end);
-    };
+  @Override
+  public Predicate toPredicate(
+      Root<Author> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+    return null;
   }
 }

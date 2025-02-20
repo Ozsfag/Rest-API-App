@@ -5,6 +5,7 @@ import com.example.demo.mapper.utils.CategoryMapperUtil;
 import com.example.demo.models.News;
 import com.example.demo.web.models.NewsRequest;
 import com.example.demo.web.models.NewsResponse;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -106,5 +107,7 @@ public interface NewsMapper {
    * @param request the NewsRequest with updated values
    * @param news the News entity to be updated
    */
-  void updateEntityFromDto(NewsRequest request, @MappingTarget News news);
+  News updateEntityFromDto(NewsRequest request, @MappingTarget News news);
+
+  List<NewsResponse> newsListToNewsResponseList(List<News> news);
 }

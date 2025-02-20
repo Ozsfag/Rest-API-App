@@ -1,5 +1,6 @@
 package com.example.demo.web.controllers;
 
+import com.example.demo.mapper.AuthorMapper;
 import com.example.demo.services.AuthorService;
 import com.example.demo.web.models.AuthorRequest;
 import com.example.demo.web.models.AuthorResponse;
@@ -14,26 +15,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/authors")
 public class AuthorController {
   @Autowired private AuthorService authorService;
+  @Autowired private AuthorMapper authorMapper;
 
   @GetMapping
   public ResponseEntity<List<AuthorResponse>> getAllAuthors() {
-    return ResponseEntity.ok(authorService.getAll());
+    var response = authorMapper.authoListToAuthorResponseList(authorService.getAll());
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<AuthorResponse> getAuthorById(@PathVariable Long id) {
-    return ResponseEntity.ok(authorService.getAuthorById(id));
+    var response = authorMapper.authorToAuthorResponse(authorService.getAuthorById(id));
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping
   public ResponseEntity<AuthorResponse> createAuthor(@Valid @RequestBody AuthorRequest request) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(authorService.createAuthor(request));
+    var response = authorMapper.authorToAuthorResponse(authorService.createAuthor(request));
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<AuthorResponse> updateAuthor(
       @PathVariable Long id, @Valid @RequestBody AuthorRequest request) {
-    return ResponseEntity.ok(authorService.updateAuthor(id, request));
+    var response = authorMapper.authorToAuthorResponse(authorService.updateAuthor(id, request));
+    return ResponseEntity.ok(response);
   }
 
   @DeleteMapping("/{id}")

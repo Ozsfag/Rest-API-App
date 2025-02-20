@@ -4,7 +4,6 @@ import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.models.Category;
 import com.example.demo.repositories.CategoryRepository;
 import com.example.demo.web.models.CategoryRequest;
-import com.example.demo.web.models.CategoryResponse;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,44 +14,32 @@ public class CategoryService {
   @Autowired private CategoryRepository categoryRepository;
   @Autowired private CategoryMapper categoryMapper;
 
-  public List<CategoryResponse> getAll() {
-    return categoryRepository.findAll().stream()
-        .map(categoryMapper::categoryToCategoryResponse)
-        .toList();
+  public List<Category> getAll() {
+    return categoryRepository.findAll();
   }
 
-  public CategoryResponse getCategoryById(Long id) {
-    Category category =
-        categoryRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Category not found when trying to get."));
-    return categoryMapper.categoryToCategoryResponse(category);
+  public Category getCategoryById(Long id) {
+    return categoryRepository
+        .findById(id)
+        .orElseThrow(() -> new RuntimeException("Category not found when trying to get."));
   }
 
   @Transactional
-  public CategoryResponse createCategory(CategoryRequest request) {
+  public Category createCategory(CategoryRequest request) {
     Category category = categoryMapper.categoryRequestToCategory(request);
-    Category savedCategory = categoryRepository.save(category);
-    return categoryMapper.categoryToCategoryResponse(savedCategory);
+    return categoryRepository.save(category);
   }
 
   @Transactional
-  public CategoryResponse updateCategory(Long id, CategoryRequest request) {
-    Category category =
-        categoryRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Category not found when trying to update."));
-    categoryMapper.updateEntityFromDto(request, category);
-    Category updatedCategory = categoryRepository.save(category);
-    return categoryMapper.categoryToCategoryResponse(updatedCategory);
+  public Category updateCategory(Long id, CategoryRequest request) {
+    Category category = getCategoryById(id);
+    Category updatedCategory = categoryMapper.updateEntityFromDto(request, category);
+    return categoryRepository.save(updatedCategory);
   }
 
   @Transactional
   public void deleteCategory(Long id) {
-    Category category =
-        categoryRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Category not found when trying to delete."));
+    Category category = getCategoryById(id);
     categoryRepository.delete(category);
   }
 }

@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 import com.example.demo.models.Author;
 import com.example.demo.web.models.AuthorRequest;
 import com.example.demo.web.models.AuthorResponse;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -54,5 +55,7 @@ public interface AuthorMapper {
    * @param request the AuthorResponse with updated values
    * @param author the Author entity to be updated
    */
-  void updateEntityFromDto(AuthorRequest request, @MappingTarget Author author);
+  Author updateEntityFromDto(AuthorRequest request, @MappingTarget Author author);
+
+  List<AuthorResponse> authoListToAuthorResponseList(List<Author> authors);
 }

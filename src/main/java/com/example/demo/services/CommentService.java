@@ -4,7 +4,6 @@ import com.example.demo.mapper.CommentMapper;
 import com.example.demo.models.Comment;
 import com.example.demo.repositories.CommentRepository;
 import com.example.demo.web.models.CommentRequest;
-import com.example.demo.web.models.CommentResponse;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,43 +14,32 @@ public class CommentService {
   @Autowired private CommentRepository commentRepository;
   @Autowired private CommentMapper commentMapper;
 
-  public List<CommentResponse> getAll() {
-    return commentRepository.findAll().stream()
-        .map(commentMapper::commentToCommentResponse)
-        .toList();
+  public List<Comment> getAll() {
+    return commentRepository.findAll();
   }
 
-  public CommentResponse getCommentById(Long id) {
+  public Comment getCommentById(Long id) {
     return commentRepository
         .findById(id)
-        .map(commentMapper::commentToCommentResponse)
         .orElseThrow(() -> new RuntimeException("Comment not found when trying to get."));
   }
 
   @Transactional
-  public CommentResponse createComment(CommentRequest request) {
+  public Comment createComment(CommentRequest request) {
     Comment comment = commentMapper.commentRequestToComment(request);
-    Comment savedComment = commentRepository.save(comment);
-    return commentMapper.commentToCommentResponse(savedComment);
+    return commentRepository.save(comment);
   }
 
   @Transactional
-  public CommentResponse updateComment(Long id, CommentRequest request) {
-    Comment comment =
-        commentRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Comment not found when trying to update."));
-    commentMapper.updateEntityFromDto(request, comment);
-    Comment updatedComment = commentRepository.save(comment);
-    return commentMapper.commentToCommentResponse(updatedComment);
+  public Comment updateComment(Long id, CommentRequest request) {
+    Comment comment = getCommentById(id);
+    Comment updatedComment = commentMapper.updateEntityFromDto(request, comment);
+    return commentRepository.save(updatedComment);
   }
 
   @Transactional
   public void deleteComment(Long id) {
-    Comment comment =
-        commentRepository
-            .findById(id)
-            .orElseThrow(() -> new RuntimeException("Comment not found when trying to delete."));
+    Comment comment = getCommentById(id);
     commentRepository.delete(comment);
   }
 }
