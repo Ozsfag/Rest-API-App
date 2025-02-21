@@ -7,9 +7,6 @@ import lombok.Data;
 @Data
 public class CommentRequest {
 
-  @NotNull(message = "Category id must be not null.")
-  private Long id;
-
   @NotBlank(message = "Content is required.")
   private String content;
 

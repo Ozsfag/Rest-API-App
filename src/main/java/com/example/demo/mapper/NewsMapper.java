@@ -31,7 +31,7 @@ public interface NewsMapper {
    * @param request the NewsRequest to be mapped
    * @return the mapped News entity
    */
-  @Mapping(target = "id", source = "id")
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "title", source = "title")
   @Mapping(target = "content", source = "content")
   @Mapping(
@@ -51,7 +51,6 @@ public interface NewsMapper {
    * @param news the News entity to be mapped
    * @return the mapped NewsRequest
    */
-  @Mapping(target = "id", source = "id")
   @Mapping(target = "title", source = "title")
   @Mapping(target = "content", source = "content")
   @Mapping(target = "authorId", source = "author.id")
@@ -111,6 +110,7 @@ public interface NewsMapper {
    * @param request the NewsRequest with updated values
    * @param news the News entity to be updated
    */
+  @Mapping(target = "id", ignore = true)
   @Mapping(
       target = "author",
       qualifiedByName = {"authorMapperUtil", "getAuthorByAuthorId"},

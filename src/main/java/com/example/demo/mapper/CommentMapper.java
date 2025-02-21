@@ -39,7 +39,7 @@ public interface CommentMapper {
    * @param request the CommentResponse to be mapped
    * @return the mapped Comment entity
    */
-  @Mapping(target = "id", source = "id")
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "content", source = "content")
   @Mapping(
       target = "news",
@@ -57,6 +57,7 @@ public interface CommentMapper {
    * @param request the CommentResponse with updated values
    * @param comment the Comment entity to be updated
    */
+  @Mapping(target = "id", ignore = true)
   @Mapping(
       target = "news",
       qualifiedByName = {"newsMapperUtil", "getNewsByNewsId"},

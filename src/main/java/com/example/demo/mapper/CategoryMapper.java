@@ -34,9 +34,9 @@ public interface CategoryMapper {
    * @param request the CategoryResponse to be mapped
    * @return the mapped Category entity
    */
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "name", source = "name")
   @Mapping(target = "description", source = "description")
-  @Mapping(target = "id", source = "id")
   Category categoryRequestToCategory(CategoryRequest request);
 
   @Named("categoryResponseToCategory")
@@ -51,6 +51,7 @@ public interface CategoryMapper {
    * @param request the CategoryRequest with updated values
    * @param category the Category entity to be updated
    */
+  @Mapping(target = "id", ignore = true)
   Category updateEntityFromDto(CategoryRequest request, @MappingTarget Category category);
 
   List<CategoryResponse> categoryListToCategoryResponseList(List<Category> categories);
