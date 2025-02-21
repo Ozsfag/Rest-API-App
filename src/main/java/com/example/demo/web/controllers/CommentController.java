@@ -19,7 +19,8 @@ public class CommentController {
 
   @GetMapping("/{newsId}")
   public ResponseEntity<List<CommentResponse>> getAllComments(Long newsId) {
-    var response = commentMapper.commentListToCommentResponseList(commentService.getCommentsById(newsId));
+    var response =
+        commentMapper.commentListToCommentResponseList(commentService.getCommentsById(newsId));
     return ResponseEntity.ok(response);
   }
 

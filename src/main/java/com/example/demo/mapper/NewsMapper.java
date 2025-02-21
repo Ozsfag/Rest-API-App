@@ -71,7 +71,7 @@ public interface NewsMapper {
   @Mapping(target = "author", qualifiedByName = "authorToAuthorResponse", source = "author")
   @Mapping(target = "category", qualifiedByName = "categoryToCategoryResponse", source = "category")
   @Mapping(target = "comments", ignore = true)
-  @Mapping(target = "commentCount", expression = "java(news.getComments().size())")
+  @Mapping(target = "commentCount", expression = "java((long)news.getComments().size())")
   NewsResponse newsToNewsResponse(News news);
 
   /**
@@ -111,5 +111,14 @@ public interface NewsMapper {
    * @param request the NewsRequest with updated values
    * @param news the News entity to be updated
    */
+  @Mapping(
+      target = "author",
+      qualifiedByName = {"authorMapperUtil", "getAuthorByAuthorId"},
+      source = "authorId")
+  @Mapping(
+      target = "category",
+      qualifiedByName = {"categoryMapperUtil", "getCategoryByCategoryId"},
+      source = "categoryId")
+  @Mapping(target = "comments", ignore = true)
   News updateEntityFromDto(NewsRequest request, @MappingTarget News news);
 }

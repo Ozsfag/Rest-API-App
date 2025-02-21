@@ -57,6 +57,14 @@ public interface CommentMapper {
    * @param request the CommentResponse with updated values
    * @param comment the Comment entity to be updated
    */
+  @Mapping(
+      target = "news",
+      qualifiedByName = {"newsMapperUtil", "getNewsByNewsId"},
+      source = "newsId")
+  @Mapping(
+      target = "author",
+      qualifiedByName = {"authorMapperUtil", "getAuthorByAuthorId"},
+      source = "authorId")
   Comment updateEntityFromDto(CommentRequest request, @MappingTarget Comment comment);
 
   @Named("commentListToCommentResponseList")
@@ -64,4 +72,16 @@ public interface CommentMapper {
 
   @Named("commentResponseListToCommentList")
   List<Comment> commentResponseListToCommentList(List<CommentResponse> comments);
+
+  @Mapping(target = "id", source = "id")
+  @Mapping(target = "content", source = "content")
+  @Mapping(
+      target = "news",
+      qualifiedByName = {"newsMapperUtil", "getNewsByNewsId"},
+      source = "newsId")
+  @Mapping(
+      target = "author",
+      qualifiedByName = {"authorMapperUtil", "getAuthorByAuthorId"},
+      source = "authorId")
+  Comment commentResponseToComment(CommentResponse response);
 }
