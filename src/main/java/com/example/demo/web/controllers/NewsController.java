@@ -1,6 +1,7 @@
 package com.example.demo.web.controllers;
 
 import com.example.demo.mapper.NewsMapper;
+import com.example.demo.repositories.criteria.NewsFilterCriteria;
 import com.example.demo.services.NewsService;
 import com.example.demo.web.models.NewsRequest;
 import com.example.demo.web.models.NewsResponse;
@@ -21,6 +22,14 @@ public class NewsController {
   @GetMapping
   public ResponseEntity<Page<NewsResponse>> getAll(Pageable pageable) {
     var response = newsService.getAllNews(pageable).map(newsMapper::newsToNewsResponse);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<Page<NewsResponse>> getFilteredNEws(
+      @Valid @RequestBody NewsFilterCriteria criteria, Pageable pageable) {
+    var response =
+        newsService.getFilteredNews(criteria, pageable).map(newsMapper::newsToNewsResponse);
     return ResponseEntity.ok(response);
   }
 

@@ -4,6 +4,8 @@ import com.example.demo.annotations.Owner;
 import com.example.demo.mapper.NewsMapper;
 import com.example.demo.models.News;
 import com.example.demo.repositories.NewsRepository;
+import com.example.demo.repositories.criteria.NewsFilterCriteria;
+import com.example.demo.repositories.specifications.NewsSpecifications;
 import com.example.demo.web.models.NewsRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,10 @@ public class NewsService {
 
   public Page<News> getAllNews(Pageable pageable) {
     return newsRepository.findAll(pageable);
+  }
+
+  public Page<News> getFilteredNews(NewsFilterCriteria criteria, Pageable pageable) {
+    return newsRepository.findAll(NewsSpecifications.withFilters(criteria), pageable);
   }
 
   public News getNewsById(Long id) {
