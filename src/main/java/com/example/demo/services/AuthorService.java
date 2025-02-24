@@ -1,9 +1,11 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.AuthorNotFoundException;
 import com.example.demo.mapper.AuthorMapper;
 import com.example.demo.models.Author;
 import com.example.demo.repositories.AuthorRepository;
 import com.example.demo.web.models.AuthorRequest;
+import java.text.MessageFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +24,7 @@ public class AuthorService {
   public Author getAuthorById(Long id) {
     return authorRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Author now found when trying to get."));
+        .orElseThrow(() -> new AuthorNotFoundException(MessageFormat.format("Author with id: {} not found when trying to get.", id)));
   }
 
   @Transactional

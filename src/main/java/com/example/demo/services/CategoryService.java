@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.CategoryNonFoundException;
 import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.models.Category;
 import com.example.demo.repositories.CategoryRepository;
@@ -22,7 +23,10 @@ public class CategoryService {
   public Category getCategoryById(Long id) {
     return categoryRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Category not found when trying to get."));
+        .orElseThrow(
+            () ->
+                new CategoryNonFoundException(
+                    "Category with id: {} not found when trying to get."));
   }
 
   @Transactional

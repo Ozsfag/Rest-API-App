@@ -1,9 +1,11 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.CommentNotFoundException;
 import com.example.demo.mapper.CommentMapper;
 import com.example.demo.models.Comment;
 import com.example.demo.repositories.CommentRepository;
 import com.example.demo.web.models.CommentRequest;
+import java.text.MessageFormat;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class CommentService {
   public Comment getCommentById(Long id) {
     return commentRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Comment not found when trying to get."));
+        .orElseThrow(() -> new CommentNotFoundException(MessageFormat.format("Comment with id: {} not found when trying to get.", id)));
   }
 
   @Transactional

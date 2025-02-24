@@ -17,8 +17,8 @@ public class CommentController {
   @Autowired private CommentService commentService;
   @Autowired private CommentMapper commentMapper;
 
-  @GetMapping("/{newsId}")
-  public ResponseEntity<List<CommentResponse>> getAllComments(Long newsId) {
+  @GetMapping("/news/{newsId}")
+  public ResponseEntity<List<CommentResponse>> getAllComments(@PathVariable Long newsId) {
     var response =
         commentMapper.commentListToCommentResponseList(commentService.getCommentsById(newsId));
     return ResponseEntity.ok(response);

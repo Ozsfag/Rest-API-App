@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.annotations.Owner;
+import com.example.demo.exceptions.NewsNotFoundException;
 import com.example.demo.mapper.NewsMapper;
 import com.example.demo.models.News;
 import com.example.demo.repositories.NewsRepository;
@@ -8,6 +9,7 @@ import com.example.demo.repositories.criteria.NewsFilterCriteria;
 import com.example.demo.repositories.specifications.NewsSpecifications;
 import com.example.demo.web.models.NewsRequest;
 import jakarta.transaction.Transactional;
+import java.text.MessageFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +31,7 @@ public class NewsService {
   public News getNewsById(Long id) {
     return newsRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("News not found when trying to get."));
+        .orElseThrow(() -> new NewsNotFoundException(MessageFormat.format("News with id: {} not found when trying to get.", id)));
   }
 
   @Transactional
